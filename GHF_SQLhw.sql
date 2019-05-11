@@ -131,5 +131,18 @@ GROUP BY category.name
 ORDER BY SUM(payment.amount) DESC;
 
 -- 8a. In your new role as an executive, you would like to have an easy way of viewing the Top five genres by gross revenue. Use the solution from the problem above to create a view. If you haven't solved 7h, you can substitute another query to create a view.
+CREATE VIEW view_categories AS
+SELECT category.name, SUM(payment.amount) FROM category, film_category, inventory, payment, rental
+WHERE film_category.category_id= category.category_id
+AND inventory.film_id = film_category.film_id
+AND rental.inventory_id = inventory.inventory_id
+AND payment.rental_id = rental.rental_id
+GROUP BY category.name
+ORDER BY SUM(payment.amount) DESC;
+
 -- 8b. How would you display the view that you created in 8a?
+Select view_categories
+From sakila.VIEWS;
+
 -- 8c. You find that you no longer need the view top_five_genres. Write a query to delete it.
+DROP VIEW view_categories;
